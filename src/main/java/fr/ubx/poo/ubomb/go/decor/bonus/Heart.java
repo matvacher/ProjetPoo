@@ -19,7 +19,7 @@ public class Heart extends Bonus {
     }
 
     public void takenBy(Player player) {
-        player.takeKey();
+        player.takeBonus();
     }
 }
 

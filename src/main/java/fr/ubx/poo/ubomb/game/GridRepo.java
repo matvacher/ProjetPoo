@@ -24,31 +24,35 @@ public abstract class GridRepo {
                 return null;
             case Stone:
                 return new Stone(pos);
-            case Heart:
-                return new Heart(pos);
             case Tree:
                 return new Tree(pos);
             case Key:
                 return new Key(pos);
             case Box:
                 return new Box(pos);
-            case Monster:
-                return new Monster(pos);
-            case BombRangeDec:
-                return new BombRangeDec(pos);
-            case BombRangeInc:
-                return new BombRangeInc(pos);
-            case Princess:
-                return new Princess(pos);
-            case BombNumberDec:
-                return new BombNumberDec(pos);
+            case Heart:
+                return new Heart(pos);
             case BombNumberInc:
                 return new BombNumberInc(pos);
+            case BombNumberDec:
+                return new BombNumberDec(pos);
+            case BombRangeInc:
+                return new BombRangeInc(pos);
+            case BombRangeDec:
+                return new BombRangeDec(pos);
+            case Monster:
+                return new Monster(pos);
+            case Princess:
+                return new Princess(pos);
             case DoorNextClosed:
-                return new Door(pos);
+                return new DoorNextClosed(pos);
+            case DoorNextOpened:
+                return new DoorNextOpened(pos);
+            case DoorPrevOpened:
+                return new DoorPrevOpened(pos);
             default:
                 return null;
-                //throw new RuntimeException("EntityCode " + entityCode.name() + " not processed");
+                // throw new RuntimeException("EntityCode " + entityCode.name() + " not processed");
         }
     }
 }
