@@ -95,31 +95,36 @@ public class Player extends GameObject implements Movable {
         Decor dec = this.game.getGrid().get(nextPos);
         if(dec instanceof Monster){
             this.lives = this.lives -1;
-            System.out.println(this.lives);
+            //System.out.println(this.lives);
         }
         if(dec instanceof Key){
             this.takeKey(nextPos);
         }
         if(dec instanceof Heart){
             this.lives = this.lives + 1;
+            this.game.getGrid().get(nextPos).remove();
             this.game.getGrid().remove(nextPos);
             }
         if(dec instanceof BombNumberDec && this.nbBomb > 1){
             this.nbBomb = this.nbBomb - 1;
+            this.game.getGrid().get(nextPos).remove();
             this.game.getGrid().remove(nextPos);
             }
         if(dec instanceof BombNumberInc){
             this.nbBomb = this.nbBomb + 1;
+            this.game.getGrid().get(nextPos).remove();
             this.game.getGrid().remove(nextPos);
             }
         if(dec instanceof BombRangeDec){
             if(this.bombRange >= 2 ){
                 this.bombRange = this.bombRange - 1;
+                this.game.getGrid().get(nextPos).remove();
                 this.game.getGrid().remove(nextPos);
                 }
             }
         if(dec instanceof BombRangeInc){
             this.bombRange = this.bombRange + 1;
+            this.game.getGrid().get(nextPos).remove();
             this.game.getGrid().remove(nextPos);
             }
         }
@@ -143,8 +148,9 @@ public class Player extends GameObject implements Movable {
 
     public void takeKey(Position pos) {
         this.nbKey = this.nbKey + 1;
+        this.game.getGrid().get(pos).remove();
         this.game.getGrid().remove(pos);
-        System.out.println(this.game.getGrid().get(pos));
+        //System.out.println(this.game.getGrid().get(pos));
         }
 
     public void takeBonus(){}
