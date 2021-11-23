@@ -43,11 +43,15 @@ public class Player extends GameObject implements Movable {
 
     public int getNbKey() {
         return nbKey;
-        }
+    }
 
     public int getBombRange() {
         return bombRange;
-        }
+    }
+
+    public int getNbBomb(){
+        return this.nbBomb;
+    }
 
     public Direction getDirection() {
         return direction;
