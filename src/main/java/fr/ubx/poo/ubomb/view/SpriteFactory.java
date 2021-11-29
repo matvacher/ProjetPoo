@@ -44,6 +44,7 @@ public final class SpriteFactory {
         if (gameObject instanceof DoorPrevOpened)
             return new Sprite(layer, DOOR_OPENED.getImage(), gameObject);
 
+
         throw new RuntimeException("Unsupported sprite for decor " + gameObject);
     }
 }
