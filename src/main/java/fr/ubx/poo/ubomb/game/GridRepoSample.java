@@ -22,6 +22,18 @@ public class GridRepoSample extends GridRepo {
             {Empty, Empty, Empty, Empty, Box, Empty, Empty, Empty, BombNumberInc, Empty, Empty, Princess}
     };
 
+    private final EntityCode[][] level2 = {
+            {Key, Empty, Tree, Empty, Empty, Empty, Monster, Empty},
+            {Empty, Empty, Tree, Empty, Tree, Empty, Empty, Empty},
+            {Empty, Monster, Tree, Empty, Empty, Empty, Empty, DoorNextClosed},
+            {Stone, Empty, Box, Empty, Tree, BombRangeInc, Empty, Empty},
+            {Empty, Box, Stone, Box, Tree, Stone, Stone, Tree},
+            {Empty, Empty, Empty, Empty, Tree, Tree, Tree, Tree},
+            {Tree, Stone, Empty, Empty, Empty, BombRangeDec, Empty, Empty},
+            {Heart, Stone, Empty, Monster, Empty, BombNumberDec, Empty, Monster},
+            {Box, Box, Stone, Empty, Stone, Empty, Empty, Empty},
+            {Box, Box, Box, BombRangeInc, Stone, Empty, Empty, DoorPrevOpened}
+    };
 
     public GridRepoSample(Game game) {
         super(game);
