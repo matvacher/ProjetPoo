@@ -11,6 +11,7 @@ import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import javafx.geometry.Pos;
+import fr.ubx.poo.ubomb.engine.Input;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +28,7 @@ public class Player extends GameObject implements Movable {
      private int nbKey;
      private int bombRange;
      private int nbBomb;
+     private int actualLevel;
 
     public Player(Game game, Position position, int lives) {
         super(game, position);
@@ -35,6 +37,7 @@ public class Player extends GameObject implements Movable {
         this.nbKey = 0;
         this.bombRange = 1;
         this.nbBomb = game.bombBagCapacity;
+        this.actualLevel = 1;
         }
 
     public int getLives() {
@@ -55,6 +58,10 @@ public class Player extends GameObject implements Movable {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public int getActualLevel(){
+        return this.actualLevel;
     }
 
     public void requestMove(Direction direction) {
@@ -127,7 +134,14 @@ public class Player extends GameObject implements Movable {
             this.game.getGrid().get(nextPos).remove();
             this.game.getGrid().remove(nextPos);
             }
+        if(dec instanceof DoorNextOpened){
+            takeDoor(getActualLevel()+1);
+            }
+        if(dec instanceof DoorPrevOpened){
+            takeDoor(getActualLevel()-1);
         }
+
+    }
 
     @Override
     public boolean isWalkable(Player player) {
@@ -142,8 +156,16 @@ public class Player extends GameObject implements Movable {
     public void takeDoor(int gotoLevel) {
         String path = getClass().getResource("/sample").getFile();
         Game nextGame = new Game(path);
+    }
 
-
+    public void openDoor(){
+        Position nextPos = direction.nextPosition(getPosition());
+        if(this.game.getGrid().get(nextPos) instanceof DoorNextClosed && this.getNbKey() > 0 ){
+            DoorNextOpened  d = new DoorNextOpened(nextPos);
+            this.game.getGrid().remove(nextPos);
+            this.game.getGrid().set(nextPos, d);
+            //il faut update l'affichage
+        }
     }
 
     public void takeKey(Position pos) {
@@ -151,7 +173,7 @@ public class Player extends GameObject implements Movable {
         this.game.getGrid().get(pos).remove();
         this.game.getGrid().remove(pos);
         //System.out.println(this.game.getGrid().get(pos));
-        }
+    }
 
     public void takeBonus(){}
 
