@@ -72,7 +72,10 @@ public class Player extends GameObject implements Movable {
             Box box = (Box) obj;
             return box.moveBox(game, direction);
         }
-        return this.game.inside(nextPos) && (obj == null || obj.isWalkable(this));
+        if(this.game.inside(nextPos) && (obj == null || obj.isWalkable(this)) ) {
+            return true;
+        }
+        return false;
     }
 
     public void update(long now) {
@@ -99,7 +102,7 @@ public class Player extends GameObject implements Movable {
         }
         if(dec instanceof Heart){
             this.lives = this.lives + 1;
-            this.game.getGrid().get(nextPos).remove();  //explode ?
+            this.game.getGrid().get(nextPos).remove();
             this.game.getGrid().remove(nextPos);
             }
         if(dec instanceof BombNumberDec && this.nbBomb > 1){
@@ -137,6 +140,10 @@ public class Player extends GameObject implements Movable {
 
     // Example of methods to define by the player
     public void takeDoor(int gotoLevel) {
+        String path = getClass().getResource("/sample").getFile();
+        Game nextGame = new Game(path);
+
+
     }
 
     public void takeKey(Position pos) {
@@ -150,11 +157,17 @@ public class Player extends GameObject implements Movable {
 
     public boolean isDoor() {
         Decor obj = this.game.getGrid().get(this.game.getPlayer().getPosition());
-        return obj instanceof Door;
+        if (obj instanceof Door) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isWinner() {
         Decor obj = this.game.getGrid().get(this.game.getPlayer().getPosition());
-        return obj instanceof Princess;
+        if (obj instanceof Princess) {
+            return true;
+        }
+        return false;
     }
 }

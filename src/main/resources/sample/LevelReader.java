@@ -1,11 +1,9 @@
-package fr.ubx.poo.ubomb.game;
-
+package fr.ubx.poo.ubomb.resources.sample;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import resources.sample.*;
 
-public class levelReader {
+public class LevelReader {
 
     public EntityCode[][] readfile(String filePath, String arg){
         BufferedReader br = null;
