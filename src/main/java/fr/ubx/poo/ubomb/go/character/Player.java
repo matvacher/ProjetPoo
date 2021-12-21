@@ -164,6 +164,7 @@ public class Player extends GameObject implements Movable {
             DoorNextOpened  d = new DoorNextOpened(nextPos);
             this.game.getGrid().remove(nextPos);
             this.game.getGrid().set(nextPos, d);
+            this.nbKey  = this.nbKey - 1;
             //il faut update l'affichage
         }
     }
