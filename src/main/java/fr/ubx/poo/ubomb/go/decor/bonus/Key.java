@@ -21,4 +21,8 @@ public class Key extends Bonus {
     public void takenBy(Player player) {
         player.takeKey(this.getPosition());
     }
+
+    @Override
+    public void explode() {
+    }
 }

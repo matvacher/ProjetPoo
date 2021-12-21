@@ -5,6 +5,9 @@ import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import javafx.geometry.Pos;
+import fr.ubx.poo.ubomb.view.*;
+import fr.ubx.poo.ubomb.engine.GameEngine;
+
 
 public class Box extends Decor {
     public Box(Position position) {
@@ -24,5 +27,9 @@ public class Box extends Decor {
         game.getGrid().remove(posBox);       // remove box grid
         game.getGrid().set(nextPosBox,this); // set new box grid
         return true;
+    }
+    @Override
+    public void explode() {
+        remove();
     }
 }

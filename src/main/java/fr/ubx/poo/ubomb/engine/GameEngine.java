@@ -174,27 +174,47 @@ public final class GameEngine {
                 // affichage range explosion
                 for (int i = 1; i < player.getBombRange() + 1; i++) {
                     //Left
-                    Explosion explosionLeft = new Explosion(new Position(posBomb.getX() - i, posBomb.getY()));
+                    Position pos0 = new Position(posBomb.getX() - i, posBomb.getY());
+                    Decor dec0 = this.game.getGrid().get(pos0);
+                    Explosion explosionLeft = new Explosion(pos0);
                     sprites.add(SpriteFactory.create(layer, explosionLeft));
-                    checkExplosions(new Position(posBomb.getX() - i, posBomb.getY()));
+                    if(dec0 != null){
+                        dec0.explode();
+                    }
+                    checkExplosions(pos0);
                     tabExplosion[cpt] = explosionLeft;
                     cpt ++;
                     //Right
-                    Explosion explosionRight = new Explosion(new Position(posBomb.getX() + i, posBomb.getY()));
+                    Position pos1 = new Position(posBomb.getX() + i, posBomb.getY());
+                    Decor dec1 = this.game.getGrid().get(pos1);
+                    Explosion explosionRight = new Explosion(pos1);
                     sprites.add(SpriteFactory.create(layer, explosionRight));
-                    checkExplosions(new Position(posBomb.getX() + i, posBomb.getY()));
+                    if(dec1 != null){
+                        dec1.explode();
+                    }
+                    checkExplosions(pos1);
                     tabExplosion[cpt] = explosionRight;
                     cpt ++;
                     //Up
-                    Explosion explosionUp = new Explosion(new Position(posBomb.getX(), posBomb.getY() - i));
+                    Position pos2 = new Position(posBomb.getX(), posBomb.getY() - i);
+                    Decor dec2 = this.game.getGrid().get(pos2);
+                    Explosion explosionUp = new Explosion(pos2);
                     sprites.add(SpriteFactory.create(layer, explosionUp));
-                    checkExplosions(new Position(posBomb.getX(), posBomb.getY() - i));
+                    if(dec2 != null){
+                        dec2.explode();
+                    }
+                    checkExplosions(pos2);
                     tabExplosion[cpt] = explosionUp;
                     cpt ++;
                     //Down
-                    Explosion explosionDown = new Explosion(new Position(posBomb.getX(), posBomb.getY() + i));
+                    Position pos3 = new Position(posBomb.getX(), posBomb.getY() + i);
+                    Decor dec3 = this.game.getGrid().get(pos3);
+                    Explosion explosionDown = new Explosion(pos3);
                     sprites.add(SpriteFactory.create(layer, explosionDown));
-                    checkExplosions(new Position(posBomb.getX(), posBomb.getY() + i));
+                    if(dec3 != null){
+                        dec3.explode();
+                    }
+                    checkExplosions(pos3);
                     tabExplosion[cpt] = explosionDown;
                     cpt ++;
                 }
@@ -206,6 +226,7 @@ public final class GameEngine {
                 if(tabExplosion[0] != null){
                     Position position;
                     actualBomb.remove();
+                    player.setNbBomb(player.getNbBomb() + 1);
                     for (int i = 0; i < 4* player.getBombRange(); i++) {
 
 
@@ -225,6 +246,7 @@ public final class GameEngine {
 
 
                         tabExplosion[i].remove();
+
                     }
                 }
 
@@ -259,12 +281,17 @@ public final class GameEngine {
             player.requestMove(Direction.UP);
             input.clear();
         } else if (input.isBomb()){
-            System.out.println("Bombe ");
-            posBomb = player.getPosition();
-            time.setTime(now);
-            DisparitionExplosion = true;
-            debutExplosion = true;
-            count_bomb = 0;
+            if(player.getNbBomb() > 0) {
+                player.setNbBomb(player.getNbBomb() - 1);
+                System.out.println("Bombe ");
+                posBomb = player.getPosition();
+                time.setTime(now);
+                DisparitionExplosion = true;
+                debutExplosion = true;
+                count_bomb = 0;
+            }
+        } else if (input.isKey()) {
+            player.openDoor();
         }
 
         input.clear();
