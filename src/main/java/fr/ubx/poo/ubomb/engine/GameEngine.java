@@ -32,6 +32,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static fr.ubx.poo.ubomb.view.ImageResource.BOMB_0;
+import static fr.ubx.poo.ubomb.view.ImageResource.getBomb;
+
 
 public final class GameEngine {
 
@@ -53,7 +56,7 @@ public final class GameEngine {
     private Position posBomb;
     private Explosion[] tabExplosion;
     private int count_bomb = 0;
-    private Decor actualBomb;
+    private Decor actualBomb = new Bomb0(null);
 
 
     public GameEngine(final String windowTitle, Game game, final Stage stage) {
@@ -104,7 +107,7 @@ public final class GameEngine {
                 update(now);
                 createNewBombs(now);
                 checkCollision(now);
-                checkExplosions();
+                //checkExplosions();
 
                 // Graphic update
                 cleanupSprites();
@@ -114,13 +117,17 @@ public final class GameEngine {
         };
     }
 
-    private void checkExplosions() {
+    private void checkExplosions(Position pos) {
+
+        if(pos.equals(player.getPosition())){
+            player.setLives(player.getLives()-1);
+        }
     }
 
     private void createNewBombs(long now) {
 
 
-
+        actualBomb.setPosition(posBomb);
         Bomb0 bomb0 = new Bomb0(posBomb);
         Bomb1 bomb1 = new Bomb1(posBomb);
         Bomb2 bomb2 = new Bomb2(posBomb);
@@ -137,6 +144,7 @@ public final class GameEngine {
             if( time.delay(now ) >=  sec && count_bomb == 1){ // affichage evolution bombe
                 actualBomb.remove();
                 actualBomb = bomb2;
+                //new Sprite(layer,  getBomb(3 - count_bomb), actualBomb);
                 sprites.add(SpriteFactory.create(layer, actualBomb));
                 count_bomb ++;
             }
@@ -162,26 +170,31 @@ public final class GameEngine {
                 //sprites.add(SpriteFactory.create(layer, bomb0)); //affichage de la bombe
                 int cpt = 0;
 
+                checkExplosions(posBomb);
                 // affichage range explosion
                 for (int i = 1; i < player.getBombRange() + 1; i++) {
                     //Left
                     Explosion explosionLeft = new Explosion(new Position(posBomb.getX() - i, posBomb.getY()));
                     sprites.add(SpriteFactory.create(layer, explosionLeft));
+                    checkExplosions(new Position(posBomb.getX() - i, posBomb.getY()));
                     tabExplosion[cpt] = explosionLeft;
                     cpt ++;
                     //Right
                     Explosion explosionRight = new Explosion(new Position(posBomb.getX() + i, posBomb.getY()));
                     sprites.add(SpriteFactory.create(layer, explosionRight));
+                    checkExplosions(new Position(posBomb.getX() + i, posBomb.getY()));
                     tabExplosion[cpt] = explosionRight;
                     cpt ++;
                     //Up
                     Explosion explosionUp = new Explosion(new Position(posBomb.getX(), posBomb.getY() - i));
                     sprites.add(SpriteFactory.create(layer, explosionUp));
+                    checkExplosions(new Position(posBomb.getX(), posBomb.getY() - i));
                     tabExplosion[cpt] = explosionUp;
                     cpt ++;
                     //Down
                     Explosion explosionDown = new Explosion(new Position(posBomb.getX(), posBomb.getY() + i));
                     sprites.add(SpriteFactory.create(layer, explosionDown));
+                    checkExplosions(new Position(posBomb.getX(), posBomb.getY() + i));
                     tabExplosion[cpt] = explosionDown;
                     cpt ++;
                 }
@@ -195,7 +208,7 @@ public final class GameEngine {
                     actualBomb.remove();
                     for (int i = 0; i < 4* player.getBombRange(); i++) {
 
-                        /*
+
                         position = tabExplosion[i].getPosition();
 
                         if (game.getGrid().get(position) != null){
@@ -205,7 +218,7 @@ public final class GameEngine {
                             obj.setPosition(position);
                             //sprites.add(SpriteFactory.create(layer, obj));
                         }
-                                                 */
+
 
 
 
