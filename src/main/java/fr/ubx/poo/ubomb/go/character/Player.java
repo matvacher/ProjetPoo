@@ -41,6 +41,8 @@ public class Player extends GameObject implements Movable {
         return lives;
     }
 
+    public void setLives(int i) { this.lives = i;}
+
     public int getNbKey() {
         return nbKey;
     }
