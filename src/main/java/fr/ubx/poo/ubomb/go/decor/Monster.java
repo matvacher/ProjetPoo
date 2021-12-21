@@ -11,5 +11,10 @@ public class Monster extends Decor {
     public boolean isWalkable(Player player) {
         return true;
     }
+
+    @Override
+    public void explode(){
+        remove();
+    }
 }
 

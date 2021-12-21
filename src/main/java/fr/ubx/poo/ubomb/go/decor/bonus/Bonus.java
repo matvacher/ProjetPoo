@@ -23,4 +23,5 @@ public abstract class Bonus extends Decor implements Takeable {
     public void explode() {
         remove();
     }
+
 }

@@ -8,10 +8,7 @@ import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.character.Player;
-import fr.ubx.poo.ubomb.go.decor.Bomb0;
-import fr.ubx.poo.ubomb.go.decor.Bomb1;
-import fr.ubx.poo.ubomb.go.decor.Bomb2;
-import fr.ubx.poo.ubomb.go.decor.Bomb3;
+import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.Decor;
 import fr.ubx.poo.ubomb.go.decor.Explosion;
 import fr.ubx.poo.ubomb.view.*;
@@ -54,7 +51,7 @@ public final class GameEngine {
     private boolean DisparitionExplosion = false;
     private boolean debutExplosion = true;
     private Position posBomb;
-    private Explosion[] tabExplosion;
+    private Decor[] tabExplosion;
     private int count_bomb = 0;
     private Decor actualBomb = new Bomb0(null);
 
@@ -166,7 +163,7 @@ public final class GameEngine {
             if( (time.delay(now) >= 4 * sec)  && debutExplosion ) {
                 debutExplosion = false;
                 int size = 4* player.getBombRange();
-                tabExplosion = new Explosion[size];
+                tabExplosion = new Decor[size];
                 //sprites.add(SpriteFactory.create(layer, bomb0)); //affichage de la bombe
                 int cpt = 0;
 
@@ -177,45 +174,71 @@ public final class GameEngine {
                     Position pos0 = new Position(posBomb.getX() - i, posBomb.getY());
                     Decor dec0 = this.game.getGrid().get(pos0);
                     Explosion explosionLeft = new Explosion(pos0);
-                    sprites.add(SpriteFactory.create(layer, explosionLeft));
+
                     if(dec0 != null){
                         dec0.explode();
+                        i = player.getBombRange();
+                        tabExplosion[cpt] = dec0;
+                    }
+                    else{
+
+                        sprites.add(SpriteFactory.create(layer, explosionLeft));
+                        tabExplosion[cpt] = explosionLeft;
                     }
                     checkExplosions(pos0);
-                    tabExplosion[cpt] = explosionLeft;
-                    cpt ++;
+                    cpt++;
+                }
                     //Right
+                for (int i = 1; i < player.getBombRange() + 1; i++) {
                     Position pos1 = new Position(posBomb.getX() + i, posBomb.getY());
                     Decor dec1 = this.game.getGrid().get(pos1);
-                    Explosion explosionRight = new Explosion(pos1);
-                    sprites.add(SpriteFactory.create(layer, explosionRight));
                     if(dec1 != null){
                         dec1.explode();
+                        i = player.getBombRange();
+                        tabExplosion[cpt] = dec1;
+                    }
+                    else{
+                        Explosion explosionRight = new Explosion(pos1);
+                        sprites.add(SpriteFactory.create(layer, explosionRight));
+                        tabExplosion[cpt] = explosionRight;
                     }
                     checkExplosions(pos1);
-                    tabExplosion[cpt] = explosionRight;
                     cpt ++;
+                }
                     //Up
+                for (int i = 1; i < player.getBombRange() + 1; i++) {
                     Position pos2 = new Position(posBomb.getX(), posBomb.getY() - i);
                     Decor dec2 = this.game.getGrid().get(pos2);
-                    Explosion explosionUp = new Explosion(pos2);
-                    sprites.add(SpriteFactory.create(layer, explosionUp));
+
                     if(dec2 != null){
                         dec2.explode();
+                        i = player.getBombRange();
+                        tabExplosion[cpt] = dec2;
+                    }
+                    else{
+                        Explosion explosionUp = new Explosion(pos2);
+                        sprites.add(SpriteFactory.create(layer, explosionUp));
+                        tabExplosion[cpt] = explosionUp;
                     }
                     checkExplosions(pos2);
-                    tabExplosion[cpt] = explosionUp;
                     cpt ++;
+                }
                     //Down
+                for (int i = 1; i < player.getBombRange() + 1; i++) {
                     Position pos3 = new Position(posBomb.getX(), posBomb.getY() + i);
                     Decor dec3 = this.game.getGrid().get(pos3);
-                    Explosion explosionDown = new Explosion(pos3);
-                    sprites.add(SpriteFactory.create(layer, explosionDown));
+
                     if(dec3 != null){
                         dec3.explode();
+                        i = player.getBombRange();
+                        tabExplosion[cpt] = dec3;
+                    }
+                    else{
+                          Explosion explosionDown = new Explosion(pos3);
+                          sprites.add(SpriteFactory.create(layer, explosionDown));
+                          tabExplosion[cpt] = explosionDown;
                     }
                     checkExplosions(pos3);
-                    tabExplosion[cpt] = explosionDown;
                     cpt ++;
                 }
             }
@@ -229,24 +252,20 @@ public final class GameEngine {
                     player.setNbBomb(player.getNbBomb() + 1);
                     for (int i = 0; i < 4* player.getBombRange(); i++) {
 
-
                         position = tabExplosion[i].getPosition();
 
                         if (game.getGrid().get(position) != null){
                             Decor obj = game.getGrid().get(position);
-                            tabExplosion[i].remove();
-                            game.getGrid().set(position,obj);
+                            Decor dec = new Stone(position);
+                            //tabExplosion[i].remove();
+                            game.getGrid().set(position,dec);
                             obj.setPosition(position);
+
                             //sprites.add(SpriteFactory.create(layer, obj));
                         }
-
-
-
-
-
-
-                        tabExplosion[i].remove();
-
+                        else{
+                            tabExplosion[i].remove();
+                        }
                     }
                 }
 

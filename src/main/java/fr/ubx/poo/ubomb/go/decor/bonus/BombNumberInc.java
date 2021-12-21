@@ -9,11 +9,6 @@ public class BombNumberInc extends Bonus {
         super(position);
     }
 
-    @Override
-    public boolean isWalkable(Player player) {
-        return true;
-    }
-
     public void takenBy(Player player) {
         player.takeBonus();
     }
