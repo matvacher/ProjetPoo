@@ -105,6 +105,7 @@ public final class GameEngine {
                 createNewBombs(now);
                 checkCollision(now);
                 //checkExplosions();
+
                 if(game.getGrid().get(player.getPosition()) instanceof Monster){
                     player.checkPlayerlive(now);
                 }
@@ -247,7 +248,7 @@ public final class GameEngine {
             }
 
             //efface les explosions
-            if (time.delay(now) >= 5*sec) { // possible de multiplier sec pour avoir 0.5s ou 2s de delay ect ...
+            if (time.delay(now) >= 5*sec) {
                 DisparitionExplosion = false;
                 if(tabExplosion[0] != null){
                     Position position;
@@ -303,7 +304,11 @@ public final class GameEngine {
                 count_bomb = 0;
             }
         } else if (input.isKey()) {
-            player.openDoor();
+            if(player.openDoor()) {
+                Position nextPos = player.getDirection().nextPosition(player.getPosition());
+                DoorNextOpened door = new DoorNextOpened(nextPos);
+                sprites.add(SpriteFactory.create(layer, door));
+            }
         }
 
         input.clear();

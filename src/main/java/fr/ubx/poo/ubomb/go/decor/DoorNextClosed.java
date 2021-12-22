@@ -7,11 +7,11 @@ import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.go.character.Player;
 
 
-public class DoorNextClosed extends Decor{
+public class DoorNextClosed extends Decor {
     public DoorNextClosed(Position position) {
         super(position);
     }
-
+    /*
     public void openDoor(Position nextPos){
         if(this.game.getGrid().get(nextPos) instanceof DoorNextClosed ){
             DoorNextOpened  d = new DoorNextOpened(nextPos);
@@ -19,4 +19,6 @@ public class DoorNextClosed extends Decor{
             //il faut update l'affichage
         }
     }
+
+     */
 }

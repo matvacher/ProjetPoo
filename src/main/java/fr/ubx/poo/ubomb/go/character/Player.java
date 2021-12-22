@@ -173,6 +173,7 @@ public class Player extends GameObject implements Movable {
             takeDoor(getActualLevel()-1);
             actualLevel = actualLevel - 1 ;
         }
+        System.out.println(game.getGrid().get(new Position(5,6)));
 
     }
 
@@ -191,26 +192,46 @@ public class Player extends GameObject implements Movable {
         Game nextGame = new Game(path);
     }
 
+    /*
     public void openDoor(){
         Position nextPos = direction.nextPosition(getPosition());
-        /*Decor dec = this.game.getGrid().get(nextPos);
+        Decor dec = this.game.getGrid().get(nextPos);
         if(dec instanceof DoorNextClosed && this.getNbKey() > 0){
             this.game.getGrid().remove(nextPos);
             DoorNextClosed d = new DoorNextClosed(nextPos);
             d.openDoor(nextPos);
             this.nbKey  = this.nbKey - 1;
-        }*/
+        }
 
 
         if(this.game.getGrid().get(nextPos) instanceof DoorNextClosed && this.getNbKey() > 0 ){
             DoorNextOpened  d = new DoorNextOpened(nextPos);
+            d.setPosition(nextPos);
             this.game.getGrid().remove(nextPos);
             this.game.getGrid().set(nextPos, d);
             System.out.println(game.getGrid().get(nextPos));;
             this.nbKey  = this.nbKey - 1;
             //il faut update l'affichage
+
         }
     }
+     */
+
+    public boolean openDoor(){
+        Position nextPos = direction.nextPosition(getPosition());
+        Decor decor = this.game.getGrid().get(nextPos);
+
+        if(decor instanceof DoorNextClosed && this.getNbKey() > 0 ){
+            DoorNextOpened  d = new DoorNextOpened(nextPos);
+            d.setPosition(nextPos);
+            this.game.getGrid().remove(nextPos);
+            this.game.getGrid().set(nextPos, d);
+            this.nbKey  = this.nbKey - 1;
+            return true;
+        }
+        return false;
+    }
+
 
     public void takeKey(Position pos) {
         this.nbKey = this.nbKey + 1;
