@@ -140,11 +140,11 @@ public class Player extends GameObject implements Movable {
             }
         if(dec instanceof DoorNextOpened){
             this.takeDoor(getActualLevel()+1);
-             game.actualLevel = game.actualLevel + 1 ;
+             actualLevel = actualLevel + 1 ;
             }
         if(dec instanceof DoorPrevOpened){
             takeDoor(getActualLevel()-1);
-             game.actualLevel = game.actualLevel - 1 ;
+            actualLevel = actualLevel - 1 ;
         }
 
     }
