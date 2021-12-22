@@ -5,6 +5,7 @@
 package fr.ubx.poo.ubomb.go.character;
 
 import com.sun.marlin.DRenderer;
+import fr.ubx.poo.ubomb.engine.Timer;
 import fr.ubx.poo.ubomb.game.*;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
@@ -29,6 +30,8 @@ public class Player extends GameObject implements Movable {
      private int bombRange;
      private int nbBomb;
      private int actualLevel;
+     private Timer time = new Timer(0);
+     private boolean invulnerability = false;
 
     public Player(Game game, Position position, int lives) {
         super(game, position);
@@ -73,6 +76,34 @@ public class Player extends GameObject implements Movable {
         return this.actualLevel;
     }
 
+    public void setTime(long now){
+        this.time.setTime(now);
+    }
+
+
+    public void setInvulnerability(boolean state){
+        this.invulnerability = state;
+    }
+
+    public boolean getInvulnerability(){
+        return invulnerability;
+    }
+
+    public void checkPlayerlive(long now){
+        long sec = 1000000000;
+
+        if (time.delay(now) >=  sec){
+            setInvulnerability(false);
+            time.setTime(0);
+        }
+
+        if (!getInvulnerability()){
+            setLives(getLives() - 1);
+            setInvulnerability(true);
+            setTime(now);
+        }
+    }
+
     public void requestMove(Direction direction) {
         if (direction != this.direction) {
             this.direction = direction;
@@ -109,10 +140,6 @@ public class Player extends GameObject implements Movable {
         setPosition(nextPos);
 
         Decor dec = this.game.getGrid().get(nextPos);
-        if(dec instanceof Monster){
-            this.lives = this.lives -1;
-            //System.out.println(this.lives);
-        }
         if(dec instanceof Key){
             this.takeKey(nextPos);
         }

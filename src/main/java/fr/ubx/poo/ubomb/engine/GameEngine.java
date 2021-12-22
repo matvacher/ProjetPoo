@@ -105,6 +105,9 @@ public final class GameEngine {
                 createNewBombs(now);
                 checkCollision(now);
                 //checkExplosions();
+                if(game.getGrid().get(player.getPosition()) instanceof Monster){
+                    player.checkPlayerlive(now);
+                }
 
                 // Graphic update
                 cleanupSprites();
@@ -114,10 +117,10 @@ public final class GameEngine {
         };
     }
 
-    private void checkExplosions(Position pos) {
+    private void checkExplosions(Position pos,long now) {
 
         if(pos.equals(player.getPosition())){
-            player.setLives(player.getLives()-1);
+            player.checkPlayerlive(now);
         }
     }
 
@@ -167,7 +170,7 @@ public final class GameEngine {
                 //sprites.add(SpriteFactory.create(layer, bomb0)); //affichage de la bombe
                 int cpt = 0;
 
-                checkExplosions(posBomb);
+                checkExplosions(posBomb,now);
                 // affichage range explosion
                 for (int i = 1; i < player.getBombRange() + 1; i++) {
                     //Left
@@ -185,7 +188,7 @@ public final class GameEngine {
                         sprites.add(SpriteFactory.create(layer, explosionLeft));
                         tabExplosion[cpt] = explosionLeft;
                     }
-                    checkExplosions(pos0);
+                    checkExplosions(pos0,now);
                     cpt++;
                 }
                     //Right
@@ -202,7 +205,7 @@ public final class GameEngine {
                         sprites.add(SpriteFactory.create(layer, explosionRight));
                         tabExplosion[cpt] = explosionRight;
                     }
-                    checkExplosions(pos1);
+                    checkExplosions(pos1,now);
                     cpt ++;
                 }
                     //Up
@@ -220,7 +223,7 @@ public final class GameEngine {
                         sprites.add(SpriteFactory.create(layer, explosionUp));
                         tabExplosion[cpt] = explosionUp;
                     }
-                    checkExplosions(pos2);
+                    checkExplosions(pos2,now);
                     cpt ++;
                 }
                     //Down
@@ -238,7 +241,7 @@ public final class GameEngine {
                           sprites.add(SpriteFactory.create(layer, explosionDown));
                           tabExplosion[cpt] = explosionDown;
                     }
-                    checkExplosions(pos3);
+                    checkExplosions(pos3,now);
                     cpt ++;
                 }
             }
