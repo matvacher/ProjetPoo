@@ -15,7 +15,7 @@ public abstract class Bonus extends Decor implements Takeable {
     }
 
     @Override
-    public boolean isWalkable(Player player) {
+    public boolean isWalkable() {
         return true;
     }
 

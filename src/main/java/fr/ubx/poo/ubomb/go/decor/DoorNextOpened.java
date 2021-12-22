@@ -9,7 +9,7 @@ public class DoorNextOpened extends Decor{
         super(position);
     }
     @Override
-    public boolean isWalkable(Player player) {
+    public boolean isWalkable() {
         return true;
     }
 }

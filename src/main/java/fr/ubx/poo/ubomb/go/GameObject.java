@@ -55,5 +55,5 @@ public abstract class GameObject {
     public void explode() {
     }
 
-    public abstract boolean isWalkable(Player player);
+    public abstract boolean isWalkable();
 }

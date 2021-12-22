@@ -23,7 +23,7 @@ public abstract class Decor extends GameObject {
     }
 
     @Override
-    public boolean isWalkable(Player player) {
+    public boolean isWalkable() {
         return false;
     }
 }

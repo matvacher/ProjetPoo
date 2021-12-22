@@ -119,7 +119,7 @@ public class Player extends GameObject implements Movable {
             Box box = (Box) obj;
             return box.moveBox(game, direction);
         }
-        if(this.game.inside(nextPos) && (obj == null || obj.isWalkable(this)) ) {
+        if(this.game.inside(nextPos) && (obj == null || obj.isWalkable()) ) {
             return true;
         }
         return false;
@@ -177,7 +177,7 @@ public class Player extends GameObject implements Movable {
     }
 
     @Override
-    public boolean isWalkable(Player player) {
+    public boolean isWalkable() {
         return false;
     }
 
