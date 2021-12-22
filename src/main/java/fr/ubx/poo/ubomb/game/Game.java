@@ -34,7 +34,7 @@ public class Game {
             prop.load(input);
             bombBagCapacity = Integer.parseInt(prop.getProperty("bombBagCapacity", "3"));
             monsterVelocity = Integer.parseInt(prop.getProperty("monsterVelocity", "10"));
-            levels = Integer.parseInt(prop.getProperty("levels", "1"));
+            levels = Integer.parseInt(prop.getProperty("levels", "2"));
             playerLives = Integer.parseInt(prop.getProperty("playerLives", "3"));
             playerInvisibilityTime = Long.parseLong(prop.getProperty("playerInvisibilityTime", "4000"));
             monsterInvisibilityTime = Long.parseLong(prop.getProperty("monsterInvisibilityTime", "1000"));
@@ -42,7 +42,7 @@ public class Game {
             // Load the world
             String prefix = prop.getProperty("prefix");
             GridRepo gridRepo = new GridRepoSample(this);
-            this.grid = gridRepo.load(1, prefix + 1);
+            this.grid = gridRepo.load(, prefix + ));
 
             // Create the player
             String[] tokens = prop.getProperty("player").split("[ :x]+");

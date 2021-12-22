@@ -52,8 +52,8 @@ public final class GameEngine {
     private boolean debutExplosion = true;
     private Position posBomb;
     private Decor[] tabExplosion;
-    private int count_bomb = 0;
-    private Decor actualBomb = new Bomb0(null);
+    private Decor actualBomb = new Bomb(null , time);
+    private int count_bomb = 0 ;
 
 
     public GameEngine(final String windowTitle, Game game, final Stage stage) {
@@ -271,15 +271,6 @@ public final class GameEngine {
 
             }
         }
-    /*
-    //Timer ---> affiche "disparition toute les secondes
-    if (time.delay(now) >= sec) {
-        time.setTime(now);
-
-        System.out.println("Disparition");
-
-    }
-    */
     }
 
     private void checkCollision(long now) {
@@ -302,7 +293,6 @@ public final class GameEngine {
         } else if (input.isBomb()){
             if(player.getNbBomb() > 0) {
                 player.setNbBomb(player.getNbBomb() - 1);
-                System.out.println("Bombe ");
                 posBomb = player.getPosition();
                 time.setTime(now);
                 DisparitionExplosion = true;
