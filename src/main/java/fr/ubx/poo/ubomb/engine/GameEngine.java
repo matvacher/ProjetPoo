@@ -111,7 +111,7 @@ public final class GameEngine {
                     player.checkPlayerlive(now);
                 }
 
-                for(int i = 0 ; i < game.getGrid().getWidth(); i++){
+                /*for(int i = 0 ; i < game.getGrid().getWidth(); i++){
                     for(int j = 0 ; j < game.getGrid().getHeight(); j++){
                         Position pos = new Position(i,j);
                         Decor dec = game.getGrid().get(pos);
@@ -121,7 +121,7 @@ public final class GameEngine {
                             monster.updatePos(now, game);
                         }
                     }
-                }
+                }*/
 
                 // Graphic update
                 cleanupSprites();
@@ -139,7 +139,7 @@ public final class GameEngine {
                             }
                         }
                     };
-                    //initialize(); si on initialise , on obtient la map du level voulu mais le player n'est plus affiché
+                    //initialize(); //si on initialise , on obtient la map du level voulu mais le player n'est plus affiché
                     //sprites.add(new SpritePlayer(layer, game.getPlayer()));
 
                 }
@@ -154,7 +154,7 @@ public final class GameEngine {
                             }
                         }
                     }
-                    //initialize();
+                    initialize();
                     //sprites.add(new SpritePlayer(layer, game.getPlayer()));
 
                 }

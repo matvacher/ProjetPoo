@@ -78,6 +78,10 @@ public class Player extends GameObject implements Movable {
         return this.actualLevel;
     }
 
+    public void setActualLevel(int i){
+        this.actualLevel = i ;
+    }
+
     public void setTime(long now){
         this.time.setTime(now);
     }
@@ -168,10 +172,10 @@ public class Player extends GameObject implements Movable {
             this.game.getGrid().get(nextPos).remove();
             }
         if(dec instanceof DoorNextOpened){
-             actualLevel = actualLevel + 1 ;
+             setActualLevel(this.actualLevel + 1);
             }
         if(dec instanceof DoorPrevOpened){
-            actualLevel = actualLevel - 1 ;
+            setActualLevel(this.actualLevel - 1 );
         };
 
     }
