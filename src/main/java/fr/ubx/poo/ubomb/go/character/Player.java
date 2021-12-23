@@ -13,6 +13,8 @@ import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import javafx.geometry.Pos;
 import fr.ubx.poo.ubomb.engine.Input;
+import fr.ubx.poo.ubomb.engine.*;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -166,14 +168,11 @@ public class Player extends GameObject implements Movable {
             this.game.getGrid().get(nextPos).remove();
             }
         if(dec instanceof DoorNextOpened){
-            this.takeDoor(getActualLevel()+1);
              actualLevel = actualLevel + 1 ;
             }
         if(dec instanceof DoorPrevOpened){
-            takeDoor(getActualLevel()-1);
             actualLevel = actualLevel - 1 ;
-        }
-        System.out.println(game.getGrid().get(new Position(5,6)));
+        };
 
     }
 
@@ -188,8 +187,7 @@ public class Player extends GameObject implements Movable {
 
     // Example of methods to define by the player
     public void takeDoor(int gotoLevel) {
-        String path = getClass().getResource("/sample").getFile();
-        Game nextGame = new Game(path);
+
     }
 
     /*
@@ -236,18 +234,23 @@ public class Player extends GameObject implements Movable {
     public void takeKey(Position pos) {
         this.nbKey = this.nbKey + 1;
         this.game.getGrid().get(pos).remove();
-        //System.out.println(this.game.getGrid().get(pos));
     }
 
     public void takeBonus(){
     }
 
-    public boolean isDoor() {
+    public int isDoor() {/*
         Decor obj = this.game.getGrid().get(this.game.getPlayer().getPosition());
-        if (obj instanceof Door) {
-            return true;
+        if (obj instanceof DoorNextOpened) {
+            return 1;
         }
-        return false;
+        else if (obj instanceof DoorPrevOpened){
+            return -1;
+        }
+        else{
+            return 0;
+        }*/
+        return 0;
     }
 
     public boolean isWinner() {

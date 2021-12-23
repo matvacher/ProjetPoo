@@ -24,7 +24,7 @@ public class Game {
     public final int levels;
     public final long playerInvisibilityTime;
     public final long monsterInvisibilityTime;
-    private final Grid grid;
+    private final Grid [] grid;
     private final Player player;
 
     public Game(String worldPath) {
@@ -42,8 +42,10 @@ public class Game {
             // Load the world
             String prefix = prop.getProperty("prefix");
             GridRepo gridRepo = new GridRepoSample(this);
-            this.grid = gridRepo.load(1, prefix + 1);
-
+            this.grid = new Grid[levels];
+            for(int i = 1 ; i < levels + 1   ; i++){
+                this.grid[i-1] = gridRepo.load(i, prefix + i);
+            }
             // Create the player
             String[] tokens = prop.getProperty("player").split("[ :x]+");
             if (tokens.length != 2)
@@ -60,7 +62,7 @@ public class Game {
     }
 
     public Grid getGrid() {
-        return grid;
+        return grid[getPlayer().getActualLevel()-1];
     }
 
     // Returns the player, monsters and bombs at a given position
@@ -80,8 +82,8 @@ public class Game {
         // Dans le quadrillage
         int x = position.getX();
         int y = position.getY();
-        int max_x = grid.getWidth() - 1;
-        int max_y = grid.getHeight() - 1;
+        int max_x = grid[player.getActualLevel()].getWidth() - 1;
+        int max_y = grid[player.getActualLevel()].getHeight() - 1;
         return x <= max_x && y <= max_y && x >= 0 && y >= 0;
 
     }

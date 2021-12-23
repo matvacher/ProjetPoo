@@ -45,6 +45,7 @@ public final class GameEngine {
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
+    private int actualLevel = 1;
 
     //bombe
     private Timer time = new Timer(0);
@@ -110,10 +111,53 @@ public final class GameEngine {
                     player.checkPlayerlive(now);
                 }
 
+                for(int i = 0 ; i < game.getGrid().getWidth(); i++){
+                    for(int j = 0 ; j < game.getGrid().getHeight(); j++){
+                        Position pos = new Position(i,j);
+                        Decor dec = game.getGrid().get(pos);
+                        if(dec instanceof Monster){
+                            Monster monster = (Monster) dec;
+                            monster.moveRequested(now);
+                            monster.updatePos(now, game);
+                        }
+                    }
+                }
+
                 // Graphic update
                 cleanupSprites();
                 render();
                 statusBar.update(game);
+
+                if( actualLevel == player.getActualLevel() - 1){
+                    actualLevel = player.getActualLevel();
+                    for(int i = 0 ; i < game.getGrid().getWidth(); i++){
+                        for(int j = 0 ; j < game.getGrid().getHeight(); j++){
+                            Position pos = new Position(i,j);
+                            Decor dec = game.getGrid().get(pos);
+                            if(dec instanceof DoorPrevOpened){
+                                player.setPosition(pos);
+                            }
+                        }
+                    };
+                    //initialize(); si on initialise , on obtient la map du level voulu mais le player n'est plus affiché
+                    //sprites.add(new SpritePlayer(layer, game.getPlayer()));
+
+                }
+                if( actualLevel == player.getActualLevel() + 1){
+                    actualLevel = player.getActualLevel();
+                    for(int i = 0 ; i < game.getGrid().getWidth(); i++){
+                        for(int j = 0 ; j < game.getGrid().getHeight(); j++){
+                            Position pos = new Position(i,j);
+                            Decor dec = game.getGrid().get(pos);
+                            if(dec instanceof DoorNextOpened){
+                                player.setPosition(pos);
+                            }
+                        }
+                    }
+                    //initialize();
+                    //sprites.add(new SpritePlayer(layer, game.getPlayer()));
+
+                }
             }
         };
     }
@@ -347,9 +391,8 @@ public final class GameEngine {
             showMessage("Gagné", Color.BLUE);
         }
 
-        if (player.isDoor()) {
+        if (player.isDoor() != 0) {
             gameLoop.start();
-            player.takeDoor(2);
             //showMessage("Porte Prise", Color.PURPLE);
         }
 

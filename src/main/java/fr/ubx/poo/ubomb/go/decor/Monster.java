@@ -23,39 +23,59 @@ public class Monster extends Decor implements Movable{
         super(position);
     }
 
+    public boolean canMove(Direction direction){ return true;};
+    public void doMove(Direction direction){};
+
     public boolean isWalkable() {
         return true;
     }
 
-    public final boolean canMove(Direction direction) {
-        Position nextPos = direction.nextPosition(getPosition());
-        Decor obj = this.game.getGrid().get(nextPos);
-        if(obj == null || obj.isWalkable() && this.game.inside(nextPos)) {
-            return true;
-        }
-        return false;
+    public void setMoveRequested(boolean b){
+        this.moveRequested = b;
     }
 
-    public void doMove(Direction direction){
-        direction = direction.random();
-        Position nextPos = direction.nextPosition(getPosition());
-        setPosition(nextPos);
-        moveRequested = false;
+    public Timer getTime(){
+        return this.time;
     }
 
-    public void update(long now) {
-        if (moveRequested) {
-            if (canMove(direction)) {
-                doMove(direction);
-            }
-        }
-        moveRequested = false;
+    public void setTime(long now){
+        this.time = new Timer(now);
     }
+
+    public void resetTimer(){
+        this.time = new Timer(0);
+    }
+
+    public boolean getMoveRequested(){
+        return this.moveRequested;
+    }
+
+
+    public void moveMonster(Direction direction, Game game){
+        Position actualPos = getPosition();
+        Position nextPos = direction.nextPosition(actualPos);
+        if (!game.inside(nextPos) || game.getGrid().get(nextPos).isWalkable()){
+            game.getGrid().remove(getPosition());
+            setPosition(nextPos);
+            game.getGrid().set(nextPos, this);
+            setMoveRequested(false);
+        }
+    }
+
+
+    public void updatePos(long now , Game game) {
+        while (getMoveRequested() != false){
+            direction = direction.random();
+            moveMonster(direction, game);
+        }
+    }
+
 
     public void moveRequested(long now){
         long sec = 1000000000;
         if(time.delay(now) >= sec){
-            moveRequested = true;
+            setMoveRequested(true);
+            setTime(now);
         }
     }
 
