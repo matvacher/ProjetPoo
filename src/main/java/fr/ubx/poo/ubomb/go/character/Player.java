@@ -243,25 +243,13 @@ public class Player extends GameObject implements Movable {
     public void takeBonus(){
     }
 
-    public int isDoor() {/*
+    public boolean isDoor() {
         Decor obj = this.game.getGrid().get(this.game.getPlayer().getPosition());
-        if (obj instanceof DoorNextOpened) {
-            return 1;
-        }
-        else if (obj instanceof DoorPrevOpened){
-            return -1;
-        }
-        else{
-            return 0;
-        }*/
-        return 0;
+        return obj instanceof Door;
     }
 
     public boolean isWinner() {
         Decor obj = this.game.getGrid().get(this.game.getPlayer().getPosition());
-        if (obj instanceof Princess) {
-            return true;
-        }
-        return false;
+        return obj instanceof Princess;
     }
 }

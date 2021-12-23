@@ -24,13 +24,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static fr.ubx.poo.ubomb.view.ImageResource.BOMB_0;
-import static fr.ubx.poo.ubomb.view.ImageResource.getBomb;
 
 
 public final class GameEngine {
@@ -48,6 +47,7 @@ public final class GameEngine {
     private int actualLevel = 1;
 
     //bombe
+    /*
     private Timer time = new Timer(0);
     private boolean DisparitionExplosion = false;
     private boolean debutExplosion = true;
@@ -56,12 +56,19 @@ public final class GameEngine {
     private Decor actualBomb = new Bomb(null , time);
     private int count_bomb = 0 ;
 
+     */
+    private Bomb[] tabBomb;
+    private int sizeTabBomb = 0;
+
 
     public GameEngine(final String windowTitle, Game game, final Stage stage) {
         this.stage = stage;
         this.windowTitle = windowTitle;
         this.game = game;
         this.player = game.getPlayer();
+        // Bombe
+        this.tabBomb = new Bomb[game.bombBagCapacity];
+        //
         initialize();
         buildAndSetGameLoop();
     }
@@ -106,7 +113,9 @@ public final class GameEngine {
                 createNewBombs(now);
                 checkCollision(now);
                 //checkExplosions();
-
+                for (int i = 0; i < sizeTabBomb; i++) {
+                    tabBomb[i].setState(now);
+                }
                 if(game.getGrid().get(player.getPosition()) instanceof Monster){
                     player.checkPlayerlive(now);
                 }
@@ -161,7 +170,7 @@ public final class GameEngine {
             }
         };
     }
-
+    /*
     private void checkExplosions(Position pos,long now) {
 
         if(pos.equals(player.getPosition())){
@@ -320,6 +329,51 @@ public final class GameEngine {
             }
         }
     }
+    */
+
+    private void addBomb(long now){
+        if(sizeTabBomb < tabBomb.length) {
+            Bomb newBomb = new Bomb(player.getPosition());
+            newBomb.getTime().setTime(now);
+            sizeTabBomb++;
+            tabBomb[sizeTabBomb - 1] = newBomb;
+            newBomb.setTabImageBomb();
+            newBomb.setRange(player.getBombRange());
+        }
+    }
+
+    private void checkExplosions(Position pos,long now) {
+        if(pos.equals(player.getPosition())){
+            player.checkPlayerlive(now);
+        }
+    }
+
+    private Decor tmp = new Bomb(null);
+
+    private void createNewBombs(long now) {
+            for (int i = 0; i < sizeTabBomb; i++) {
+                if(tabBomb[i].getDisplay() == false){
+                    tabBomb[i].getImageBomb(0).remove();
+                }
+                if (tabBomb[i] != null && tabBomb[i].getDisplay() && !tabBomb[i].getModified()) {
+                    int state = tabBomb[i].getState();
+                    if (state != 4){
+                        tabBomb[i].getImageBomb(state).setStatus(state);
+                        if(state != 3){
+                            tabBomb[i].getImageBomb(state+1).remove();
+                        }
+                        sprites.add(SpriteFactory.create(layer, tabBomb[i].getImageBomb(state)));
+                        tabBomb[i].setModified();
+                    }
+                }
+            }
+            /*
+            if(tabBomb[0].isExplosionReady()){
+                System.out.println("toto");
+            }
+             */
+
+    }
 
     private void checkCollision(long now) {
     }
@@ -340,12 +394,27 @@ public final class GameEngine {
             input.clear();
         } else if (input.isBomb()){
             if(player.getNbBomb() > 0) {
+                /*
                 player.setNbBomb(player.getNbBomb() - 1);
                 posBomb = player.getPosition();
                 time.setTime(now);
                 DisparitionExplosion = true;
                 debutExplosion = true;
                 count_bomb = 0;
+                */
+                addBomb(now);
+
+
+                /*
+                System.out.println("tableau bombe :");
+                for (int i = 0; i < tabBomb.length; i++) {
+                    System.out.printf("Bombe num " + i + " soit : " + tabBomb[i] );
+                    if (tabBomb[i] != null) {
+                        System.out.printf(" En position " + tabBomb[i].getPosition());
+                    }
+                    System.out.println("");
+                }
+                 */
             }
         } else if (input.isKey()) {
             if(player.openDoor()) {
@@ -391,7 +460,7 @@ public final class GameEngine {
             showMessage("Gagné", Color.BLUE);
         }
 
-        if (player.isDoor() != 0) {
+        if (player.isDoor()) {
             gameLoop.start();
             //showMessage("Porte Prise", Color.PURPLE);
         }
